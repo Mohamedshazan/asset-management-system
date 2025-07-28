@@ -1,14 +1,23 @@
 # frontend/Dockerfile
 FROM node:18-alpine
 
+# Set working directory
 WORKDIR /app
 
+# Copy only necessary files to install dependencies
 COPY package.json package-lock.json* ./
 
-RUN npm install || (echo "Retrying npm install..." && sleep 5 && npm install)
+# Install dependencies
+RUN npm install
 
+# Copy the full frontend app
 COPY . .
 
+# Build the Next.js app for production
+RUN npm run build
+
+# Expose the port
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+# Start in production mode
+CMD ["npm", "run", "start"]
