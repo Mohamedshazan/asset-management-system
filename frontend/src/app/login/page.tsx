@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { API_BASE_URL } from '@/lib/api';
+import api from '@/app/lib/api'; 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
@@ -25,7 +25,7 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginForm) => {
     setError('');
     try {
-const response = await axios.post(`${API_BASE_URL}/api/login`, data);
+const response = await api.post('login', data); 
       const token = response.data?.token;
       const user = response.data?.user;
 
