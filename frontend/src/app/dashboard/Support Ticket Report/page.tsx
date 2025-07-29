@@ -3,8 +3,22 @@
 import { useState } from 'react';
 import axios from '@/app/lib/api';
 
+type Ticket = {
+  id: string;
+  subject: string;
+  status: string;
+  priority?: string;
+  user?: {
+    name?: string;
+  };
+  department?: {
+    name?: string;
+  };
+  created_at?: string;
+};
+
 export default function TicketReportsPage() {
-  const [tickets, setTickets] = useState([]);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
     department: '',
@@ -70,27 +84,21 @@ export default function TicketReportsPage() {
 
       {/* Filters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">Department</label>
-          <input
-            type="text"
-            value={filters.department}
-            onChange={(e) => setFilters({ ...filters, department: e.target.value })}
-            className="w-full px-3 py-2 border rounded"
-            placeholder="e.g. HR"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">User</label>
-          <input
-            type="text"
-            value={filters.user}
-            onChange={(e) => setFilters({ ...filters, user: e.target.value })}
-            className="w-full px-3 py-2 border rounded"
-            placeholder="e.g. John"
-          />
-        </div>
+        {[
+          { label: 'Department', key: 'department', placeholder: 'e.g. HR' },
+          { label: 'User', key: 'user', placeholder: 'e.g. John' },
+        ].map(({ label, key, placeholder }) => (
+          <div key={key}>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">{label}</label>
+            <input
+              type="text"
+              value={(filters as any)[key]}
+              onChange={(e) => setFilters({ ...filters, [key]: e.target.value })}
+              className="w-full px-3 py-2 border rounded"
+              placeholder={placeholder}
+            />
+          </div>
+        ))}
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">Status</label>
@@ -182,7 +190,7 @@ export default function TicketReportsPage() {
                   <td className="p-3">{index + 1}</td>
                   <td className="p-3">{ticket.subject}</td>
                   <td className="p-3 capitalize">{ticket.status}</td>
-                  <td className="p-3 capitalize">{ticket.priority}</td>
+                  <td className="p-3 capitalize">{ticket.priority || '—'}</td>
                   <td className="p-3">{ticket.user?.name || '—'}</td>
                   <td className="p-3">{ticket.department?.name || '—'}</td>
                   <td className="p-3">
