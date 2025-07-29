@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://backend-shazan-91fdcb3a.koyeb.app', 
+  baseURL: 'https://backend-shazan-91fdcb3a.koyeb.app/api', 
  
   headers: {
     Accept: 'application/json',
