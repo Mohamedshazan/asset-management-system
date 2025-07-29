@@ -3,19 +3,19 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy only necessary files to install dependencies
+# Copy package files first to install deps
 COPY package.json package-lock.json* ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the frontend app
+# Copy the rest of the app
 COPY . .
 
-# ✅ Disable ESLint during build to fix "no-explicit-any" errors
+# ✅ Add this before build to skip ESLint errors like `no-explicit-any`
 ENV NEXT_DISABLE_ESLINT=true
 
-# ✅ Build the Next.js app for production
+# Build the Next.js app
 RUN npm run build
 
 # Expose the port
