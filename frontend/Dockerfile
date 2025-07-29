@@ -9,17 +9,17 @@ COPY package.json package-lock.json* ./
 # Install dependencies
 RUN npm install
 
-# Copy the full frontend app
+# Copy the rest of the frontend app
 COPY . .
 
-# Disable ESLint during build to prevent @typescript-eslint/no-explicit-any errors
+# ✅ Disable ESLint during build to fix "no-explicit-any" errors
 ENV NEXT_DISABLE_ESLINT=true
 
-# Build the Next.js app for production
+# ✅ Build the Next.js app for production
 RUN npm run build
 
 # Expose the port
 EXPOSE 3000
 
-# Start in production mode
+# Start the app
 CMD ["npm", "run", "start"]
