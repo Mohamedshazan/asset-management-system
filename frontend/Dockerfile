@@ -3,23 +3,23 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy package files first to install deps
+# Copy package files first to install dependencies
 COPY package.json package-lock.json* ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the app
+# Copy all other source files
 COPY . .
 
-# ✅ Add this before build to skip ESLint errors like `no-explicit-any`
+# Disable ESLint during build to avoid build errors from lint issues
 ENV NEXT_DISABLE_ESLINT=true
 
-# Build the Next.js app
+# Build the Next.js application
 RUN npm run build
 
-# Expose the port
+# Expose port 3000 for the app
 EXPOSE 3000
 
-# Start the app
+# Start the Next.js app
 CMD ["npm", "run", "start"]
