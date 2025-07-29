@@ -25,7 +25,7 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginForm) => {
     setError('');
     try {
-      const response = await axios.post('http://localhost:8000/api/login', data);
+const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, data);
 
       const token = response.data?.token;
       const user = response.data?.user;
