@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8000/api', // already includes /api
+  baseURL: 'https://backend-shazan-91fdcb3a.koyeb.app/', // already includes /api
  
   headers: {
     Accept: 'application/json',
