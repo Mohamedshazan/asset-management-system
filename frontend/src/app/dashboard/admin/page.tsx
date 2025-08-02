@@ -3,10 +3,8 @@
 import { useEffect, useState } from 'react';
 import axios from '@/app/lib/api';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
-// ---------------------------
-// Types
-// ---------------------------
 type SummaryData = {
   totalAssets: number;
   assignedAssets: number;
@@ -18,12 +16,10 @@ type SummaryData = {
   assetsByType?: Record<string, number>;
 };
 
-// ---------------------------
-// Main Component
-// ---------------------------
 export default function AdminSummary() {
   const [summary, setSummary] = useState<SummaryData | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const fetchSummary = async () => {
     setLoading(true);
@@ -45,12 +41,13 @@ export default function AdminSummary() {
     fetchSummary();
   }, []);
 
-const backupAssets = summary?.backupAssets || 0;
+  const backupAssets = summary?.backupAssets || 0;
 
+  const handleCardClick = (status: string) => {
+    const url = status ? `/dashboard/assets?status=${status}` : '/dashboard/assets';
+    router.push(url);
+  };
 
-  // ---------------------------
-  // Loading State
-  // ---------------------------
   if (loading || !summary) {
     return (
       <div className="p-6 max-w-7xl mx-auto">
@@ -66,7 +63,6 @@ const backupAssets = summary?.backupAssets || 0;
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
         <h1 className="text-3xl font-bold text-gray-800"> Dashboard</h1>
         <button
@@ -77,17 +73,21 @@ const backupAssets = summary?.backupAssets || 0;
         </button>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <StatCard title="Total Assets" value={summary.totalAssets} color="blue" icon="💼" />
-        <StatCard title="Live Assets" value={summary.assignedAssets} color="green" icon="📦" />
-        <StatCard title="Backup Assets" value={backupAssets} color="red" icon="🧰" />
+        <div className="cursor-pointer" onClick={() => handleCardClick('')}>
+          <StatCard title="Total Assets" value={summary.totalAssets} color="blue" icon="💼" />
+        </div>
+        <div className="cursor-pointer" onClick={() => handleCardClick('live')}>
+          <StatCard title="Live Assets" value={summary.assignedAssets} color="green" icon="📦" />
+        </div>
+        <div className="cursor-pointer" onClick={() => handleCardClick('backup')}>
+          <StatCard title="Backup Assets" value={backupAssets} color="red" icon="🧰" />
+        </div>
         <StatCard title="Support - Pending" value={summary.supportPending} color="orange" icon="⏳" />
         <StatCard title="Support - In Progress" value={summary.supportInProgress} color="yellow" icon="🔧" />
         <StatCard title="Support - Resolved" value={summary.supportResolved} color="emerald" icon="✅" />
       </div>
 
-      {/* Breakdown */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
         <BreakdownCard title="Assets by Department" data={summary.assetsByDepartment} />
         <BreakdownCard title="Assets by Type" data={summary.assetsByType} />
@@ -96,9 +96,6 @@ const backupAssets = summary?.backupAssets || 0;
   );
 }
 
-// ---------------------------
-// Stat Card Component
-// ---------------------------
 function StatCard({
   title,
   value,
@@ -132,9 +129,6 @@ function StatCard({
   );
 }
 
-// ---------------------------
-// Breakdown Card Component
-// ---------------------------
 function BreakdownCard({
   title,
   data = {},
