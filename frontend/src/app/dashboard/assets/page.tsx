@@ -5,6 +5,8 @@ import axios from '@/app/lib/api';
 import AssetFilters from '@/app/components/Assets/AssetFilters';
 import AssetTable from '@/app/components/Assets/AssetTable';
 import AssetActions from '@/app/components/Assets/AssetActions';
+import { useRouter } from 'next/navigation';
+
 
 import { Asset, Filters, OptionType, User, Department } from '@/app/components/Assets/types';
 import { toast } from 'react-hot-toast';
@@ -116,6 +118,21 @@ export default function AssetListPage() {
     setLoading(true);
     fetchAssets(filters);
   };
+
+
+
+  const searchParams = useSearchParams();
+
+useEffect(() => {
+  const statusFromQuery = searchParams.get('status') || '';
+  const updatedFilters = { ...initialFilters, status: statusFromQuery };
+
+  setFilters(updatedFilters);
+  fetchAssets(updatedFilters);
+  fetchUsers();
+  fetchDepartments();
+  setHasMounted(true);
+}, []);
 
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this asset?')) return;
