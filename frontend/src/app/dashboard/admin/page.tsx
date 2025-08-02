@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import axios from '@/app/lib/api';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 type SummaryData = {
   totalAssets: number;
