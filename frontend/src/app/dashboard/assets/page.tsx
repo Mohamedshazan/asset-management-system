@@ -5,7 +5,7 @@ import axios from '@/app/lib/api';
 import AssetFilters from '@/app/components/Assets/AssetFilters';
 import AssetTable from '@/app/components/Assets/AssetTable';
 import AssetActions from '@/app/components/Assets/AssetActions';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 
 import { Asset, Filters, OptionType, User, Department } from '@/app/components/Assets/types';
@@ -121,18 +121,23 @@ export default function AssetListPage() {
 
 
 
-  const searchParams = useSearchParams();
+ const router = useRouter();
 
 useEffect(() => {
-  const statusFromQuery = searchParams.get('status') || '';
-  const updatedFilters = { ...initialFilters, status: statusFromQuery };
+  const { status = '' } = router.query;
+
+  const updatedFilters = {
+    ...initialFilters,
+    status: typeof status === 'string' ? status : '',
+  };
 
   setFilters(updatedFilters);
   fetchAssets(updatedFilters);
   fetchUsers();
   fetchDepartments();
   setHasMounted(true);
-}, []);
+}, [router.query]);
+
 
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this asset?')) return;
