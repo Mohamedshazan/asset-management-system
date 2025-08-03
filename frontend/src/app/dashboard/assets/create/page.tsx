@@ -140,7 +140,6 @@ export default function CreateAssetPage() {
               <option value="Desktop">Desktop</option>
               <option value="Laptop">Laptop</option>
               <option value="Projector">Projector</option>
-              <option value="Projector">Projector</option>
               <option value="Ewis TAB">Ewis TAB</option>
               <option value="Lenovo Tab">Lenovo Tab</option>
               <option value="UMIDIGI TAB">UMIDIGI TAB</option>
