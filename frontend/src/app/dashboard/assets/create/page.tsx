@@ -108,8 +108,8 @@ export default function CreateAssetPage() {
             >
               <option value="">Select asset type</option>
               <option value="Laptop">Laptop</option>
-              <option value="PC">PC</option>
-              <option value="Tablet">Tablet</option>
+              <option value="PC">Desktop</option>
+              <option value="Tablet">Tab</option>
               <option value="Monitor">Monitor</option>
               <option value="Printer">Printer</option>
               <option value="Other">Other</option>
@@ -123,7 +123,7 @@ export default function CreateAssetPage() {
                 <h2 className="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">General Information</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <InputField name="department_id" label="Department ID" value={form.department_id} onChange={handleChange} />
-                  <InputField name="location" label="Location" value={form.location} onChange={handleChange} />
+                  <InputField name="location" label="Current Location" value={form.location} onChange={handleChange} />
                 </div>
               </div>
 
